@@ -23,9 +23,7 @@ class Linear(torch.nn.Module):
         super().__init__()
 
         # Создание необходимых обучаемых параметров
-        self.weight = torch.nn.parameter.Parameter(
-            torch.empty(in_features, out_features)
-        )
+        self.weight = torch.nn.parameter.Parameter(torch.empty(in_features, out_features))
         self.bias = torch.nn.parameter.Parameter(torch.empty(out_features))
 
         # Выполнение инициализации весов
