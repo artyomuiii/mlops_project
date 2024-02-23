@@ -1,0 +1,19 @@
+data:
+  x_train_path: data/x_train.pt
+  y_train_path: data/y_train.pt
+  x_test_path: data/x_test.pt
+  y_test_path: data/y_test.pt
+  x_infer_path: data/x_test.pt
+  y_infer_path: data/y_test.pt
+
+model:
+  in_features: 64
+  hidden_size: 32
+  n_classes: 10
+  n_layers: 3
+
+training:
+  n_epochs: 200
+
+save_params:
+  path: models/dense_network.pt

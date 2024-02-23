@@ -1,19 +1,29 @@
+import os
+
+import hydra
 import torch
+from omegaconf import DictConfig
 
 import model
 from utils import training_loop
 
 
-def main():
+@hydra.main(config_path="../conf", config_name="config", version_base="1.3")
+def main(cfg: DictConfig) -> None:
     # Загрузка датасета из DVC
-    X_train = torch.load("data/x_train.pt")
-    y_train = torch.load("data/y_train.pt")
-    X_test = torch.load("data/x_test.pt")
-    y_test = torch.load("data/y_test.pt")
+    os.system("dvc pull --force")
+    X_train = torch.load(cfg.data.x_train_path)
+    y_train = torch.load(cfg.data.y_train_path)
+    X_test = torch.load(cfg.data.x_test_path)
+    y_test = torch.load(cfg.data.y_test_path)
 
     # Создание полносвязной НС
     dense_network = model.DenseNetwork(
-        in_features=64, hidden_size=32, n_classes=10, n_layers=3, activation=model.ReLU
+        in_features=cfg.model.in_features,
+        hidden_size=cfg.model.hidden_size,
+        n_classes=cfg.model.n_classes,
+        n_layers=cfg.model.n_layers,
+        activation=model.ReLU,
     )
     optimizer = torch.optim.LBFGS(dense_network.parameters(), max_iter=1)
 
@@ -25,7 +35,7 @@ def main():
 
     # Обучение
     train_losses, test_losses, train_accs, test_accs = training_loop(
-        n_epochs=200,
+        n_epochs=cfg.training.n_epochs,
         network=dense_network,
         loss_fn=torch.nn.CrossEntropyLoss(),
         optimizer=optimizer,
@@ -35,7 +45,7 @@ def main():
     )
 
     # Сохранение параметров обученной модели
-    torch.save(dense_network.state_dict(), "models/dense_network.pt")
+    torch.save(dense_network.state_dict(), cfg.save_params.path)
 
 
 if __name__ == "__main__":

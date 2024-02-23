@@ -1,19 +1,29 @@
+import os
+
+import hydra
 import torch
+from omegaconf import DictConfig
 
 import model
 import utils
 
 
-def main():
+@hydra.main(config_path="../conf", config_name="config", version_base="1.3")
+def main(cfg: DictConfig) -> None:
     # Загрузка датасета из DVC
-    X = torch.load("data/x_test.pt")
-    y = torch.load("data/y_test.pt")
+    os.system("dvc pull --force")
+    X = torch.load(cfg.data.x_infer_path)
+    y = torch.load(cfg.data.y_infer_path)
 
     # Загрузка параметров обученной модели
     dense_network = model.DenseNetwork(
-        in_features=64, hidden_size=32, n_classes=10, n_layers=3, activation=model.ReLU
+        in_features=cfg.model.in_features,
+        hidden_size=cfg.model.hidden_size,
+        n_classes=cfg.model.n_classes,
+        n_layers=cfg.model.n_layers,
+        activation=model.ReLU,
     )
-    dense_network.load_state_dict(torch.load("models/dense_network.pt"))
+    dense_network.load_state_dict(torch.load(cfg.save_params.path))
 
     # Выбор девайса
     device = torch.device("cpu")
