@@ -1,0 +1,5 @@
+outs:
+- md5: e15e04d631bbc923c1ac003093e38bf6
+  size: 231511
+  hash: md5
+  path: x_test.pt

@@ -1,0 +1,5 @@
+outs:
+- md5: 79ff362eef2c214085d4d2408ec74e13
+  size: 690844
+  hash: md5
+  path: x_train.pt

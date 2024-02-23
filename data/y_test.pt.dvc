@@ -1,0 +1,5 @@
+outs:
+- md5: 00ccc34f8aca25757768535a4db6ef3b
+  size: 4759
+  hash: md5
+  path: y_test.pt
