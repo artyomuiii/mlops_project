@@ -75,3 +75,19 @@ def training_loop(n_epochs, network, loss_fn, optimizer, ds_train, ds_test, devi
                 )
 
     return train_losses, test_losses, train_accuracies, test_accuracies
+
+
+def inference(network, loss_fn, ds, device):
+    network.eval()
+
+    with torch.no_grad():
+        y_pred = network(ds[0].float().to(device))
+        torch.save(y_pred, "models/y_pred.pt")
+
+        loss = loss_fn(y_pred, ds[1].to(device))
+        acc = (
+            torch.sum(torch.argmax(y_pred, 1) == ds[1].to(device))
+            / ds[1].to(device).shape[0]
+        ) * 100
+
+        print("Loss: {0:.3f}. Accuracy, %: {1:.2f}".format(loss, acc))

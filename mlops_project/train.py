@@ -6,10 +6,10 @@ from utils import training_loop
 
 def main():
     # Загрузка датасета из DVC
-    X_train = None
-    y_train = None
-    X_test = None
-    y_test = None
+    X_train = torch.load("data/x_train.pt")
+    y_train = torch.load("data/y_train.pt")
+    X_test = torch.load("data/x_test.pt")
+    y_test = torch.load("data/y_test.pt")
 
     # Создание полносвязной НС
     dense_network = model.DenseNetwork(
@@ -35,7 +35,7 @@ def main():
     )
 
     # Сохранение параметров обученной модели
-    torch.save(dense_network.state_dict(), "dense_network.pt")
+    torch.save(dense_network.state_dict(), "models/dense_network.pt")
 
 
 if __name__ == "__main__":
