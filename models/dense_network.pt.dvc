@@ -1,0 +1,5 @@
+outs:
+- md5: 657b05567870b9afee76866f8f747257
+  size: 16580
+  hash: md5
+  path: dense_network.pt
